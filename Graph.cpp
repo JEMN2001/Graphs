@@ -195,4 +195,65 @@ std::vector<std::size_t> find_path(Graph & G) {
 	return path;
 }
 
+bool Graph::uncolored_vertex(std::vector<std::size_t> c_nodes) {
+	for (std::size_t i = 0; i < c_nodes.size(); ++i) {
+		if(c_nodes.at(i) == 0)
+			return true;
+	}
+	return false;
+}
+
+bool Graph::colored_neighbor(std::size_t node, std::size_t color, std::vector<std::size_t> coloration) {
+	for (std::size_t i = 0; i < this->matrix.size(); ++i) {
+		if (this->matrix[node][i] > 0 && coloration.at(i) == color)
+			return true;
+	}
+	return false;
+}
+
+std::vector<std::size_t> color_graph(Graph & G){
+	std::vector<std::size_t> out;
+	for (std::size_t i = 0; i < G.matrix.size(); ++i)
+		out.push_back(0);
+	std::size_t color = 1;
+	while(G.uncolored_vertex(out)) {
+		for (std::size_t i = 0; i < out.size(); ++i) {
+			if (out.at(i) == 0 && !G.colored_neighbor(i,color,out))
+				out.at(i) = color;
+		}
+		color++;
+	}
+	return out;
+}
+
+bool Graph::uv_path(std::size_t u, std::size_t v, std::unordered_set<std::size_t> choices, std::stack<std::size_t> prev) {
+	choices.insert(v);
+	for (std::size_t i = 0; i < this->order(); ++i) {
+		if (u == i && this->matrix[u][v] > 0)
+			return true;
+		if(u != i && this->matrix[v][i] > 0 && choices.count(i) == 0) {
+			prev.push(v);
+			return uv_path(u,i,choices,prev);
+		}
+	}
+	if (prev.size() == 0)
+		return false;
+	std::size_t tmp = prev.top();
+	prev.pop();
+	return uv_path(u,tmp,choices,prev);
+}
+
+Graph breadth_search(Graph & G) {
+	std::size_t order = G.order();
+	Graph out;
+	for (std::size_t i = 0; i < order; ++i)
+		out.add_node();
+	for (std::size_t i = 0; i < order; ++i) {
+		for (std::size_t j = i; j < order; ++j) {
+			if (G.matrix[i][j] > 0 && !out.uv_path(i,j))
+				out.add_edge(i,j);
+		}
+	}
+	return out;
+}
 #endif //_Graph_cpp_

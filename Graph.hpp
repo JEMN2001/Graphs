@@ -8,6 +8,7 @@
 #include<iostream>
 #include<vector>
 #include<stack>
+#include<unordered_set>
 #include<string>
 #include<fstream>
 
@@ -16,8 +17,31 @@
 */
 class Graph {
   private:
-    //Adjacency matrix of the graph
+    /*
+    *Adjacency matrix of the graph
+    */
     std::vector<std::vector<std::size_t>> matrix;
+    /*
+    *Function that determines if a vertex has no color given a coloration
+    *c_nodes: a list with the colors, where the i-th element is the color of the i-th node
+    *return: true if a node has no color, false if not
+    */
+    bool uncolored_vertex(std::vector<std::size_t> c_nodes);
+    /*
+    *Function that determines if a node has a neighbor with a given color
+    *node: node to be checked
+    *color: the color to be checked
+    *coloration: a list with the colors, where the i-th element is the color of the i-th node
+    *return: true if a neighbor of node has the color color, false if not
+    */
+    bool colored_neighbor(std::size_t node, std::size_t color, std::vector<std::size_t> coloration);
+    /*
+    *Function that determines if there is an uv-path in the graph
+    *u,v: the nodes
+    *choices and prev are used for recursion proposes
+    *return: true if there is an uv-path, false if not
+    */
+    bool uv_path(std::size_t u, std::size_t v, std::unordered_set<std::size_t> choices = std::unordered_set<std::size_t>(),std::stack<std::size_t> prev = std::stack<std::size_t>());
   public:
     /*
     *void constructor for the Graph class
@@ -76,8 +100,8 @@ class Graph {
     */
     std::size_t max_grade() const;
     /*
-    *Function that gives the minimum grade of the graoh
-    *return: the minimum grade of the graoh
+    *Function that gives the minimum grade of the graph
+    *return: the minimum grade of the graph
     */
     std::size_t min_grade() const;
     /*
@@ -117,6 +141,18 @@ class Graph {
     *        a vector with the eulerian path
     */
     friend std::vector<std::size_t> find_path(Graph & G);
+    /*
+    *Function that gives a proper coloring for the nodes
+    *G: graph
+    *return: a list of colors, where the i-th element is the color of the i-th node
+    */
+    friend std::vector<std::size_t> color_graph(Graph & G);
+    /*
+    *Function that returns an expansion tree from the graph G using the breadth search algorithms
+    *G: graph
+    *return: expansion tree of G
+    */
+    friend Graph breadth_search(Graph & G);
 };
 
 #endif //_Graph_hpp_

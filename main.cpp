@@ -5,11 +5,13 @@ using namespace std;
 void print_vec(vector<size_t> & v);
 
 int main() {
-	Graph G("matrix");
+	Graph G("matrix"), T;
 	G.print_matrix();
-	vector<size_t> path = find_path(G);
+	vector<size_t> path = find_path(G), coloration = color_graph(G);
 	print_vec(path);
-	G.print_matrix();
+	print_vec(coloration);
+	T = breadth_search(G);
+	T.print_matrix();
 }
 
 void print_vec(vector<size_t> & v) {
@@ -20,4 +22,5 @@ void print_vec(vector<size_t> & v) {
 		else 
 			cout << v.at(i) << ']';
 	}
+	cout << endl;
 }
