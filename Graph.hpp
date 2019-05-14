@@ -148,11 +148,17 @@ class Graph {
     */
     friend std::vector<std::size_t> color_graph(Graph & G);
     /*
-    *Function that returns an expansion tree from the graph G using the breadth search algorithms
+    *Function that returns an expansion tree from the graph G using the breadth search algorithm
     *G: graph
     *return: expansion tree of G
     */
     friend Graph breadth_search(Graph & G);
+    /*
+    *Function that returns an expansion tree from the graph G using the depth search algorithm
+    *G: Graph
+    *return: expansion tree of G
+    */
+    friend Graph depth_search(Graph & G);
 };
 
 #endif //_Graph_hpp_

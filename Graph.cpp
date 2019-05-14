@@ -256,4 +256,21 @@ Graph breadth_search(Graph & G) {
 	}
 	return out;
 }
+
+Graph depth_search(Graph & G) {
+    std::size_t order = G.order();
+    Graph out;
+    for (std::size_t i = 0; i < order; ++i)
+      out.add_node();
+    for (std::size_t i = 0; i < order; ++i) {
+      for (std::size_t j = 0; j < order; ++j) {
+        if (G.matrix[i][j] > 0 && !out.uv_path(i,j) && out.matrix[i][j] == 0) {
+          out.add_edge(i,j);
+          break;
+        }
+      }
+    }
+    return out;
+}
+
 #endif //_Graph_cpp_

@@ -12,14 +12,16 @@ int main() {
 	print_vec(coloration);
 	T = breadth_search(G);
 	T.print_matrix();
+	T = depth_search(G);
+	T.print_matrix();
 }
 
 void print_vec(vector<size_t> & v) {
 	cout << '[';
 	for (size_t i = 0; i < v.size(); ++i) {
-		if (i < v.size()-1) 
+		if (i < v.size()-1)
 			cout << v.at(i) << ", ";
-		else 
+		else
 			cout << v.at(i) << ']';
 	}
 	cout << endl;
