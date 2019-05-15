@@ -273,4 +273,36 @@ Graph depth_search(Graph & G) {
     return out;
 }
 
+std::size_t shortest_uv_path(Graph & G, std::size_t u, std::size_t v) {
+  std::vector<std::size_t> out;
+  std::set<std::size_t> Tm;
+  if (u >= G.order() || v >= G.order()) {
+    std::cerr << "on of the nodes doesn't belong to the graph" << std::endl;
+    return 0;
+  }
+  for (std::size_t i = 0; i < G.order(); ++i) {
+    if (i == u)
+      out.push_back(0);
+    else
+      out.push_back(0-1);
+    Tm.insert(i);
+  }
+  while(Tm.count(v) > 0) {
+    std::size_t vertex = 0;
+    for(std::size_t i = 0; i < G.order(); ++i) {
+      if(out[i] < out[vertex])
+        vertex = i;
+    }
+    Tm.erase(vertex);
+    for (std::size_t i = 0; i < G.order(); ++i) {
+      if (G.matrix[vertex][i] > 0) {
+        if (out[vertex]+1 < out[i]) {
+          out[i] = out[vertex]+1;
+        }
+      }
+    }
+  }
+  return out[v];
+}
+
 #endif //_Graph_cpp_

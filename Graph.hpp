@@ -9,6 +9,7 @@
 #include<vector>
 #include<stack>
 #include<unordered_set>
+#include<set>
 #include<string>
 #include<fstream>
 
@@ -159,6 +160,7 @@ class Graph {
     *return: expansion tree of G
     */
     friend Graph depth_search(Graph & G);
+    friend std::size_t shortest_uv_path(Graph & G, std::size_t u, std::size_t v);
 };
 
 #endif //_Graph_hpp_

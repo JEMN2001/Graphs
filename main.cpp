@@ -14,6 +14,8 @@ int main() {
 	T.print_matrix();
 	T = depth_search(G);
 	T.print_matrix();
+	size_t length = shortest_uv_path(G,0,4);
+	cout << length << endl;
 }
 
 void print_vec(vector<size_t> & v) {
