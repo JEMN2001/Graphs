@@ -1,6 +1,6 @@
 /*
 *Created by Juan Murcia dnd Samuel Perez
-*Last update: 11/05/19
+*Last update: 16/05/19
 */
 
 #ifndef _Graph_hpp_
@@ -27,7 +27,7 @@ class Graph {
     *c_nodes: a list with the colors, where the i-th element is the color of the i-th node
     *return: true if a node has no color, false if not
     */
-    bool uncolored_vertex(std::vector<std::size_t> c_nodes);
+    bool uncolored_vertex(std::vector<std::size_t> c_nodes) const;
     /*
     *Function that determines if a node has a neighbor with a given color
     *node: node to be checked
@@ -35,14 +35,14 @@ class Graph {
     *coloration: a list with the colors, where the i-th element is the color of the i-th node
     *return: true if a neighbor of node has the color color, false if not
     */
-    bool colored_neighbor(std::size_t node, std::size_t color, std::vector<std::size_t> coloration);
+    bool colored_neighbor(std::size_t node, std::size_t color, std::vector<std::size_t> coloration) const;
     /*
     *Function that determines if there is an uv-path in the graph
     *u,v: the nodes
     *choices and prev are used for recursion proposes
     *return: true if there is an uv-path, false if not
     */
-    bool uv_path(std::size_t u, std::size_t v, std::unordered_set<std::size_t> choices = std::unordered_set<std::size_t>(),std::stack<std::size_t> prev = std::stack<std::size_t>());
+    bool uv_path(std::size_t u, std::size_t v, std::unordered_set<std::size_t> choices = std::unordered_set<std::size_t>(),std::stack<std::size_t> prev = std::stack<std::size_t>()) const;
   public:
     /*
     *void constructor for the Graph class
@@ -50,7 +50,7 @@ class Graph {
     */
     Graph();
     /*
-    *Destroyer of tha class
+    *Destroyer of the class
     *Eliminates a Graph
     */
     ~Graph();

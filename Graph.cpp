@@ -146,20 +146,26 @@ void Graph::clear() {
 
 void Graph::print_matrix() const {
 	std::cout << std::endl;
+  char ch;
 	for (std::size_t i = 0; i < this->matrix.size(); ++i) {
+    std::cout << '|';
 		for (std::size_t j = 0; j < this->matrix[i].size(); ++j) {
-			std::cout << this->matrix[i][j] << "  ";
+      ch = ' ';
+      if (j == this->order()-1)
+        ch = '|';
+			std::cout << this->matrix[i][j] << ch;
 		}
 		std::cout << std::endl;
 	}
+  std::cout << std::endl;
 }
 
 std::vector<std::size_t> find_path(Graph & G) {
-	std::vector<std::vector<std::size_t>> matrix = G.matrix;
+	Graph tm = G;
 	std::vector<std::size_t> adj, path;
-	std::size_t order = G.order();
+	std::size_t order = tm.order();
 	for (std::size_t i = 0; i < order; ++i) {
-		adj.push_back(G.grade(i));
+		adj.push_back(tm.grade(i));
 	}
 	std::size_t start = 0, odd = 0;
 	for (std::size_t i = 0; i < adj.size(); ++i) {
@@ -172,18 +178,18 @@ std::vector<std::size_t> find_path(Graph & G) {
 		return path;
 	std::stack<std::size_t> stk;
 	std::size_t cur = start;
-	while(!stk.empty() || G.grade(cur) != 0) {
-		if (G.grade(cur) == 0) {
+	while(!stk.empty() || tm.grade(cur) != 0) {
+		if (tm.grade(cur) == 0) {
 			path.push_back(cur);
 			cur = stk.top();
 			stk.pop();
 		}
 		else {
 			for (std::size_t i = 0; i < order; ++i) {
-				if (G.matrix[cur][i] >= 1) {
+				if (tm.matrix[cur][i] >= 1) {
 					stk.push(cur);
-					G.matrix[cur][i]--;
-					G.matrix[i][cur]--;
+					tm.matrix[cur][i]--;
+					tm.matrix[i][cur]--;
 					cur = i;
 					break;
 				}
@@ -191,11 +197,10 @@ std::vector<std::size_t> find_path(Graph & G) {
 		}
 	}
 	path.push_back(cur);
-	G.matrix = matrix;
 	return path;
 }
 
-bool Graph::uncolored_vertex(std::vector<std::size_t> c_nodes) {
+bool Graph::uncolored_vertex(std::vector<std::size_t> c_nodes) const{
 	for (std::size_t i = 0; i < c_nodes.size(); ++i) {
 		if(c_nodes.at(i) == 0)
 			return true;
@@ -203,7 +208,7 @@ bool Graph::uncolored_vertex(std::vector<std::size_t> c_nodes) {
 	return false;
 }
 
-bool Graph::colored_neighbor(std::size_t node, std::size_t color, std::vector<std::size_t> coloration) {
+bool Graph::colored_neighbor(std::size_t node, std::size_t color, std::vector<std::size_t> coloration) const{
 	for (std::size_t i = 0; i < this->matrix.size(); ++i) {
 		if (this->matrix[node][i] > 0 && coloration.at(i) == color)
 			return true;
@@ -211,7 +216,7 @@ bool Graph::colored_neighbor(std::size_t node, std::size_t color, std::vector<st
 	return false;
 }
 
-std::vector<std::size_t> color_graph(Graph & G){
+std::vector<std::size_t> color_graph(Graph & G) {
 	std::vector<std::size_t> out;
 	for (std::size_t i = 0; i < G.matrix.size(); ++i)
 		out.push_back(0);
@@ -226,7 +231,7 @@ std::vector<std::size_t> color_graph(Graph & G){
 	return out;
 }
 
-bool Graph::uv_path(std::size_t u, std::size_t v, std::unordered_set<std::size_t> choices, std::stack<std::size_t> prev) {
+bool Graph::uv_path(std::size_t u, std::size_t v, std::unordered_set<std::size_t> choices, std::stack<std::size_t> prev) const{
 	choices.insert(v);
 	for (std::size_t i = 0; i < this->order(); ++i) {
 		if (u == i && this->matrix[u][v] > 0)
