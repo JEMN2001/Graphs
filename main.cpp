@@ -14,8 +14,8 @@ int main() {
 	T.print_matrix();
 	T = depth_search(G);
 	T.print_matrix();
-	size_t length = shortest_uv_path(G,0,4);
-	cout << length << endl;
+	vector<size_t> length = shortest_uv_path(G,0,1);
+	print_vec(length);
 }
 
 void print_vec(vector<size_t> & v) {
@@ -24,7 +24,7 @@ void print_vec(vector<size_t> & v) {
 		if (i < v.size()-1)
 			cout << v.at(i) << ", ";
 		else
-			cout << v.at(i) << ']';
+			cout << v.at(i);
 	}
-	cout << endl;
+	cout << ']' << endl;
 }

@@ -160,7 +160,14 @@ class Graph {
     *return: expansion tree of G
     */
     friend Graph depth_search(Graph & G);
-    friend std::size_t shortest_uv_path(Graph & G, std::size_t u, std::size_t v);
+    /*
+    *Function that uses the Dijkstra algorithm to find the shortest uv-path iin the graph
+    *G: graph
+    *u: the initial vertex
+    *v: the last vertex
+    *return: a list with the shortest uv-path, empty if there is no uv-path
+    */
+    friend std::vector<std::size_t> shortest_uv_path(Graph & G, std::size_t u, std::size_t v);
 };
 
 #endif //_Graph_hpp_

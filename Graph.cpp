@@ -273,36 +273,51 @@ Graph depth_search(Graph & G) {
     return out;
 }
 
-std::size_t shortest_uv_path(Graph & G, std::size_t u, std::size_t v) {
-  std::vector<std::size_t> out;
+std::vector<std::size_t> shortest_uv_path(Graph & G, std::size_t u, std::size_t v) {
+  std::vector<std::size_t> values,path,out;
   std::set<std::size_t> Tm;
+  std::size_t big = 1e7;
   if (u >= G.order() || v >= G.order()) {
     std::cerr << "on of the nodes doesn't belong to the graph" << std::endl;
-    return 0;
+    return path;
   }
   for (std::size_t i = 0; i < G.order(); ++i) {
     if (i == u)
-      out.push_back(0);
+      values.push_back(0);
     else
-      out.push_back(0-1);
-    Tm.insert(i);
+      values.push_back(big);
+    Tm.emplace(i);
+    path.push_back(big);
   }
+  std::size_t vertex = 0;
   while(Tm.count(v) > 0) {
-    std::size_t vertex = 0;
-    for(std::size_t i = 0; i < G.order(); ++i) {
-      if(out[i] < out[vertex])
-        vertex = i;
+    for(auto i = Tm.cbegin(); i != Tm.cend(); ++i) {
+    	if(i == Tm.cbegin())
+    		vertex = *i;
+    	if(values[*i] < values[vertex])
+    		vertex = *i;
     }
     Tm.erase(vertex);
     for (std::size_t i = 0; i < G.order(); ++i) {
       if (G.matrix[vertex][i] > 0) {
-        if (out[vertex]+1 < out[i]) {
-          out[i] = out[vertex]+1;
+        if (values[vertex]+1 < values[i]) {
+          values[i] = values[vertex]+1;
+          path[i] = vertex;
         }
       }
     }
   }
-  return out[v];
+  if (path[v] == big)
+  	return out;
+  out.push_back(u);
+  std::size_t cur = v;
+  auto it = out.cbegin();
+  while(cur != u) {
+  	it = out.cbegin()+1;
+  	out.insert(it,cur);
+  	cur = path[cur];
+  }
+  return out;
 }
 
 #endif //_Graph_cpp_
