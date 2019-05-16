@@ -34,191 +34,159 @@ juane.murcia@urosario.edu.co}
 
 \maketitle
 
-\begin{abstract}
-Este documento busca exponer el desarrollo de nuestra implementación de la clase \texttt{Graph} en el lenguaje de programación \texttt{C++}. Junto a esta, se realizaron varios algoritmos conocidos en la teoría de grafos no dirigidos.
-\end{abstract}
-
 \begin{IEEEkeywords}
 grafo, algoritmo, nodo, arista, matriz
 \end{IEEEkeywords}
 
-\section{Introduction}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits. 
+\section{Introducción}
+Este documento busca exponer una implementación de la clase \texttt{Graph} en el lenguaje de programación \texttt{C++}. Junto a esta, se realizaron varios algoritmos conocidos en la teoría de grafos no dirigidos. \texttt{C++}.
 
-\section{Ease of Use}
+\section{Resumen}
 
-\subsection{Maintaining the Integrity of the Specifications}
+Este proyecto se realizó con los ánimos de tener una representación de grafos no dirigidos. Junto a esta, también se realizaron varios algoritmos clásicos enseñados en nuestro curso de \textit{Teoría de Grafos}, junto a algunos que investigamos por nuestra cuenta. 
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
+La clase Graph se basa en la matriz de adyacencia de un grafo no dirigido. Todos los algoritmos fueron construidos en base a esta.
 
-\section{Prepare Your Paper Before Styling}
-Before you begin to format your paper, first write and save the content as a 
-separate text file. Complete all content and organizational editing before 
-formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on 
-proofreading, spelling and grammar.
+Por tanto, la clase \texttt{Graph} cuenta con tan solo un parámetro \texttt{matrix}, en el cual se almacena la matriz de adyacencia.
 
-Keep your text and graphic files separate until after the text has been 
-formatted and styled. Do not number text heads---{\LaTeX} will do that 
-for you.
-
-\subsection{Abbreviations and Acronyms}\label{AA}
-Define abbreviations and acronyms the first time they are used in the text, 
-even after they have been defined in the abstract. Abbreviations such as 
-IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use 
-abbreviations in the title or heads unless they are unavoidable.
-
-\subsection{Units}
+Los métodos desarrollados fueron: 
 \begin{itemize}
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
-\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+	\item \texttt{Graph} \textit{y sus derivados.}
+	
+	\item \texttt{uncolored\_vertex}
+	
+	\item \texttt{colored\_vertex}
+	
+	\item \texttt{colored\_neighbor}
+	
+	\item \texttt{uv\_path}
+	
+	\item \texttt{grade}
+	
+	\item \texttt{empty}
+	
+	\item \texttt{order}
+	
+	\item \texttt{size}
+	
+	\item \texttt{max\_grade}
+	
+	\item \texttt{min\_grade}
+	
+	\item \texttt{remove\_node}
+	
+	\item \texttt{remove\_edge}
+	
+	\item \texttt{add\_node}
+	
+	\item  \texttt{add\_edge}
+	
+	\item \texttt{clear}
+	
+	\item \texttt{print\_matrix}
+	
+	\item \texttt{find\_path}
+	
+	\item \texttt{color\_graph}
+	
+	\item \texttt{breadth\_search}
+	
+	\item \texttt{depth\_search}
+	
+	\item \texttt{shortest\_uv\_path}
+	
+	Cada uno de los anteriores será explicado en la sección \textbf{Funcionalidad}.
+\end{itemize} 
+\section{Funcionalidad}
+
+La clase \texttt{Graph} está basada en la matriz de adyacencia de un grafo no dirigido, esta siendo su único parámetro. 
+
+El primer acercamiento a la idea de la clase fue crear dos estructuras \texttt{nodos (V)} y \texttt{aristas (E)}, la construcción resulta ser conflictiva al hacer uso de punteros, los cuales interactuan con la memoria del computador. Dado esto, encontramos que la implementación a través de la matriz resultaba mucho más práctica.
+
+Se desarrollaron varias versiones del constructor \texttt{Graph}:
+\begin{itemize}
+	\item \texttt{Graph()}: Constructor vacío, un grafo sin nodos ni aristas.
+	
+	\item \texttt{Graph(Graph)}: Constructor copia.
+	
+	\item \texttt{Graph(A\_matrix)}: Construye un grafo con una matriz de adyacencia específica.
+	
+	\item \texttt{Graph(filename)}: Construye un grafo con una matriz de adyacencia específica contenida en un archivo \texttt{.txt}.
+\end{itemize}  
+
+También, se realizó el método destructor:
+
+\begin{itemize}
+	\item \texttt{$\thicksim$Graph()}: Destructor de la clase.
+\end{itemize} 
+
+En la \textbf{sección privada} de la clase, se definió el parámetro:
+\begin{itemize}
+	\item \texttt{matrix}: Matriz de adyacencia del grafo.
+	
 \end{itemize}
 
-\subsection{Equations}
-Number equations consecutively. To make your 
-equations more compact, you may use the solidus (~/~), the exp function, or 
-appropriate exponents. Italicize Roman symbols for quantities and variables, 
-but not Greek symbols. Use a long dash rather than a hyphen for a minus 
-sign. Punctuate equations with commas or periods when they are part of a 
-sentence, as in:
-\begin{equation}
-a+b=\gamma\label{eq}
-\end{equation}
-
-Be sure that the 
-symbols in your equation have been defined before or immediately following 
-the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at 
-the beginning of a sentence: ``Equation \eqref{eq} is . . .''
-
-\subsection{\LaTeX-Specific Advice}
-
-Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references instead
-of ``hard'' references (e.g., \verb|(1)|). That will make it possible
-to combine sections, add equations, or change the order of figures or
-citations without having to go through the file line by line.
-
-Please don't use the \verb|{eqnarray}| equation environment. Use
-\verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
-environment leaves unsightly spaces around relation symbols.
-
-Please note that the \verb|{subequations}| environment in {\LaTeX}
-will increment the main equation counter even when there are no
-equation numbers displayed. If you forget that, you might write an
-article in which the equation numbers skip from (17) to (20), causing
-the copy editors to wonder if you've discovered a new method of
-counting.
-
-{\BibTeX} does not work by magic. It doesn't get the bibliographic
-data from thin air but from .bib files. If you use {\BibTeX} to produce a
-bibliography you must send the .bib files. 
-
-{\LaTeX} can't read your mind. If you assign the same label to a
-subsubsection and a table, you might find that Table I has been cross
-referenced as Table IV-B3. 
-
-{\LaTeX} does not have precognitive abilities. If you put a
-\verb|\label| command before the command that updates the counter it's
-supposed to be using, the label will pick up the last counter to be
-cross referenced instead. In particular, a \verb|\label| command
-should not go before the caption of a figure or a table.
-
-Do not use \verb|\nonumber| inside the \verb|{array}| environment. It
-will not stop equation numbers inside \verb|{array}| (there won't be
-any anyway) and it might stop a wanted equation number in the
-surrounding equation.
-
-\subsection{Some Common Mistakes}\label{SCM}
+Y además, se definieron los siguientes métodos: 
 \begin{itemize}
-\item The word ``data'' is plural, not singular.
-\item The subscript for the permeability of vacuum $\mu_{0}$, and other common scientific constants, is zero with subscript formatting, not a lowercase letter ``o''.
-\item In American English, commas, semicolons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)
-\item A graph within a graph is an ``inset'', not an ``insert''. The word alternatively is preferred to the word ``alternately'' (unless you really mean something that alternates).
-\item Do not use the word ``essentially'' to mean ``approximately'' or ``effectively''.
-\item In your paper title, if the words ``that uses'' can accurately replace the word ``using'', capitalize the ``u''; if not, keep using lower-cased.
-\item Be aware of the different meanings of the homophones ``affect'' and ``effect'', ``complement'' and ``compliment'', ``discreet'' and ``discrete'', ``principal'' and ``principle''.
-\item Do not confuse ``imply'' and ``infer''.
-\item The prefix ``non'' is not a word; it should be joined to the word it modifies, usually without a hyphen.
-\item There is no period after the ``et'' in the Latin abbreviation ``et al.''.
-\item The abbreviation ``i.e.'' means ``that is'', and the abbreviation ``e.g.'' means ``for example''.
+	
+	\item \texttt{uncolored\_vertex}: Función que determina si un vértice no tiene color dada una coloración.
+
+	\item \texttt{colored\_neighbor}: Función que determina si un vértice tiene un vecino con un color dado.
+	
+	\item \texttt{uv\_path}: Función que determina si hay un $uv-$camino en el grafo.
 \end{itemize}
-An excellent style manual for science writers is \cite{b7}.
 
-\subsection{Authors and Affiliations}
-\textbf{The class file is designed for, but not limited to, six authors.} A 
-minimum of one author is required for all conference articles. Author names 
-should be listed starting from left to right and then moving down to the 
-next line. This is the author sequence that will be used in future citations 
-and by indexing services. Names should not be listed in columns nor group by 
-affiliation. Please keep your affiliations as succinct as possible (for 
-example, do not differentiate among departments of the same organization).
+Ahora, en la \textbf{sección pública}, se definieron los siguientes métodos  (junto a los constructores y destructor de la clase, definidos arriba):
 
-\subsection{Identify the Headings}
-Headings, or heads, are organizational devices that guide the reader through 
-your paper. There are two types: component heads and text heads.
+\begin{itemize}
 
-Component heads identify the different components of your paper and are not 
-topically subordinate to each other. Examples include Acknowledgments and 
-References and, for these, the correct style to use is ``Heading 5''. Use 
-``figure caption'' for your Figure captions, and ``table head'' for your 
-table title. Run-in heads, such as ``Abstract'', will require you to apply a 
-style (in this case, italic) in addition to the style provided by the drop 
-down menu to differentiate the head from the text.
 
-Text heads organize the topics on a relational, hierarchical basis. For 
-example, the paper title is the primary text head because all subsequent 
-material relates and elaborates on this one topic. If there are two or more 
-sub-topics, the next level head (uppercase Roman numerals) should be used 
-and, conversely, if there are not at least two sub-topics, then no subheads 
-should be introduced.
+	\item \texttt{grade}: Función que calcula el grado de un vértice.
 
-\subsection{Figures and Tables}
-\paragraph{Positioning Figures and Tables} Place figures and tables at the top and 
-bottom of columns. Avoid placing them in the middle of columns. Large 
-figures and tables may span across both columns. Figure captions should be 
-below the figures; table heads should appear above the tables. Insert 
-figures and tables after they are cited in the text. Use the abbreviation 
-``Fig.~\ref{fig}'', even at the beginning of a sentence.
+	\item \texttt{empty}: Función que determina si un grafo no tiene vértices.
 
-\begin{table}[htbp]
-\caption{Table Type Styles}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
-\cline{2-4} 
-\textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
-\hline
-copy& More table copy$^{\mathrm{a}}$& &  \\
-\hline
-\multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
-\end{tabular}
-\label{tab1}
-\end{center}
-\end{table}
+	\item \texttt{order}: Función que nos da el número de vértices del grafo.
 
-\begin{figure}[htbp]
-%\centerline{\includegraphics{fig1.png}}
-\caption{Example of a figure caption.}
-\label{fig}
-\end{figure}
+	\item \texttt{size}: Función que nos da el número de aristas del grafo.
 
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
-rather than symbols or abbreviations when writing Figure axis labels to 
-avoid confusing the reader. As an example, write the quantity 
-``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
-units in the label, present them within parentheses. Do not label axes only 
-with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
-\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
-quantities and units. For example, write ``Temperature (K)'', not 
-``Temperature/K''.
+	\item \texttt{max\_grade}: Función que nos da el máximo grado del grafo.
+
+	\item \texttt{min\_grade}: Función que nos dale el mínimo grado del grafo.
+
+	\item \texttt{remove\_node}: Función que remueve un vértice específico y todas sus aristas adyacentes.
+
+	\item \texttt{remove\_edge}: Función que remueve una arista específica del grafo.
+	
+	\item \texttt{add\_node}: Función que inserta un vértice nuevo al grafo.
+
+	\item  \texttt{add\_edge}: Función que inserta una nueva arista al grafo.
+
+	\item \texttt{clear}: Limpia el grafo.
+
+	\item \texttt{print\_matrix}: Función que muestra la matriz de adyacencia del grafo.
+
+	\item \texttt{find\_path}: Función que determina si hay un camino euleriano en el grafo y en caso afirmativo, lo encuentra.
+	
+	\item \texttt{color\_graph}: Función que da un coloreado apropiado a los vértices.
+	
+	\item \texttt{breadth\_search}: Función que retorna un árbol de expansión del grafo usando el algoritmo de búsqueda a lo ancho.
+	
+	\item \texttt{depth\_search}: Función que retorna un árbol de expansión del grafo usando el algoritmo de búsqueda a profundidad.
+	
+	\item \texttt{shortest\_uv\_path}: Función que usa el algoritmo de Dijkstra para encontrar el menor $u,v-$camino en el grafo.
+\end{itemize}
+
+
+\section{Descripción}
+En esta sección, se describirán los algoritmos que consideramos más relevantes, además, dados los análisis hechos a algunos de ellos, indicaremos su complejidad si es el caso:
+\begin{itemize}
+\item \texttt{find\_path}: Lo primero que hace el algoritmo es contar la cantidad de vértices que tengan grado impar, si estos son mayores a 2, retorna una lista vacia, de lo contrario toma como inicio uno de los vértices de grado impar (cualquier vértice si no hay vértices de grado impar) recorre una arista hacia otro vértice, elimina la arista que recorrió y repite el proceso hasta que llegue a un vértice sin más aristas, al llegar añadirá ese vértice al camino y se devolverá al anterior, repitiendo el proceso hasta que no se pueda devolver más. \\ \textbf{Complejidad}: $\mathcal{O}(N+E)$
+\item \texttt{color\_graph}: Inicializa todos los nodos con color 0 (sin color) y mientras haya un vértice sin color, recorrera todos los vértices, si el vértice actual no tiene color y ninguno de sus vecinos tiene ese color, le asignara ese color a ese vértice, si acaba la iteración y siguen habiendo vértices sin color, cambia el color y repite el proceso.\\ \textbf{Complejidad}: $\mathcal{O}(N^3)$
+\item \texttt{breadth\_search}: Crea un nuevo grafo con la misma cantidad de vértices que el grafo de entrada, luego recorrerá los vértices de ese grafo, revisará la conexión del vértice actual con el resto de vértices, y agregará una arista entre un par de vértices en el grafo de salida, si esa arista está en el grafo de entrada y no existe ya un camino entre esos vértices en el grafo de salida.\\
+\item \texttt{depth\_search}: Crea un nuevo grafo con la misma cantidad de vértices que el grafo de entrada, luego recorrerá todos los vertices de ese grafo, si encuentra una arista en el grafo de entrada que no este en el grafo de salida y no haya un camino entre esos dos vértices en el grafo de salida, agregará la arista y avanzará al siguiente vértice.\\
+\item \texttt{shortest\_uv\_path}: Lo primero que hace es el algoritmo es determinar si ambos vértices pertenecen al grafo, si esto no ocurre, soltara un mensaje de error y retornará una lista vacía. De lo contrario inicializa una lista de valores con 0 en el vértice de inicio e infinito en el resto de vértices, un conjunto con los vertices que puedo chequear y una lista con el camino que se debe tomar inicializada con infinito. Mientras el vértice de llegada siga en el conjunto, selecciona el vértice con menor valor en la lista de valores, eliminará ese vértice del cunjunto y recorrerá todos los vértices del grafo, si encuentra que uno de los nodos es adyacente con el nodo actual y el valor del vértice en la lista de valores más 1 es menor al valor actual del vértice de la iteración, actualizo el valor por el menor y repito. Una vez termine, armará el camino y lo retornará. \textbf{Complejidad}: $\mathcal{O}(N^2)$
+\end{itemize}
+\section{Conclusiones}
 
 \section*{Acknowledgment}
 
