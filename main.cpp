@@ -14,7 +14,7 @@ int main() {
 	T.print_matrix();
 	T = depth_search(G);
 	T.print_matrix();
-	vector<size_t> length = shortest_uv_path(G,0,1);
+	vector<size_t> length = shortest_uv_path(G,0,3);
 	print_vec(length);
 }
 
